@@ -119,32 +119,53 @@ public class User {
 		Scanner sn = new Scanner(System.in);
 		
 		// user types email... check db if user exists 
-		System.out.println("Please enter your email: ");
+	
+    System.out.println("Please enter your email: ");
 		String email = sn.nextLine();
-		// then password... if verified give access to account (customer/Employee)
-		System.out.println("Please enter your password: ");
+	
+    // then password... if verified give access to account (customer/Employee)
+	
+    System.out.println("Please enter your password: ");
 		String password = sn.nextLine();
-		// aka redirect to customer menu
+	
+  
+    // aka redirect to customer menu
 		
 	};
 	public void createCustomerAccount() {
 		Scanner sn = new Scanner(System.in);
+
 		// to create an account we need to have the user email 
-		System.out.println("Please enter an email.  ex: analace@gmail.com ");
+		
+    System.out.println("Please enter an email.  ex: analace@gmail.com ");
 		
 		String email = sn.nextLine();
-		// check with existing db to see if email exists.
-		// ask for first name and last name.
+	
+    // check with existing db to see if email exists.
+      // consider a callableStatement | procedue | sequence | something that returns a boolean
+      // from the customer table...
+        // if email exists, return first name saying this name is associated with this email. 
+        // is this you? do you want to open a new bank account? okay, lets get you logged in first>>>
+  
+    // if emailExists = false. ask for first name and last name.
 		System.out.println("Please enter your first name: ");
 		String firstName = sn.nextLine();
 		System.out.println("Please enter your last name: ");
 		String lastName = sn.nextLine();
-		// 
+		
+    
 		// then create password and save new account in the db with a generated id
+    // ask user to type in a password
 		System.out.println("Please enter a password: ");
 		String password = sn.nextLine();
+
+    // retype passowrd
 		System.out.println("Please renter password: ");
 		String passwordCheck = sn.nextLine();
+
+    // confirm password is the same ith equals method.
+
+    // place inputs in a user/customer constructor object and send it to the database to be added to the customer record.
 		// redirect to customer class to open bank account
 		// choose an account type to open. min deposit of $35
 		// logout
