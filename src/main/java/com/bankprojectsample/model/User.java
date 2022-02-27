@@ -2,6 +2,8 @@ package com.bankprojectsample.model;
 
 import java.util.Scanner;
 
+import com.bankprojectsample.dao.UserDaoImpl;
+
 public class User {
   
   private String firstName;
@@ -10,6 +12,10 @@ public class User {
 	private int id;
 	private String password;
   
+  public User () {
+
+  }
+
   public User(String email, String password) {
     this.email = email;
     this.password = password;
@@ -144,8 +150,12 @@ public class User {
 		String email = sn.nextLine();
 	
     // check with existing db to see if email exists.
-      // consider a callableStatement | procedue | sequence | something that returns a boolean
-      // from the customer table...
+      // UserDaoImpl checkUser = new UserDaoImpl();
+      // boolean result = checkUser.userExists(email);
+      // if !(result) {
+      //   System.out.println("We have this email registered with us..");
+      // }
+
         // if email exists, return first name saying this name is associated with this email. 
         // is this you? do you want to open a new bank account? okay, lets get you logged in first>>>
   
@@ -166,7 +176,12 @@ public class User {
 		String passwordCheck = sn.nextLine();
 
     // confirm password is the same ith equals method.
-
+    User newUser = new User(firstName, lastName, email, password);
+    
+    if (password.equals(passwordCheck)) {
+      UserDaoImpl addUser = new UserDaoImpl();
+      addUser.createCustomerAccount(newUser);
+    }
     // place inputs in a user/customer constructor object and send it to the database to be added to the customer record.
 		// redirect to customer class to open bank account
 		// choose an account type to open. min deposit of $35

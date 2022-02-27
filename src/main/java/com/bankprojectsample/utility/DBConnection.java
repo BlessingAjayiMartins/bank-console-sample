@@ -23,6 +23,7 @@ public class DBConnection {
 			
 			Class.forName(driver);
 			con = DriverManager.getConnection(url,username,password);
+      // System.out.println("connected");
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
