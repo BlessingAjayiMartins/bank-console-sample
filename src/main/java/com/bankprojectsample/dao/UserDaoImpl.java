@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import com.bankprojectsample.model.Customer;
 import com.bankprojectsample.model.User;
 import com.bankprojectsample.utility.DBConnection;
 
@@ -13,11 +14,19 @@ public class UserDaoImpl implements UserDao {
 
   Connection connection = DBConnection.getConnection();
 
-  public void login(User user) {
+  public Customer login(String email, String password) {
     System.out.println("Logging In...");
-    PreparedStatement statement = null;
+    // PreparedStatement statement = null;
+    UserDaoImpl test = new UserDaoImpl();
+    Customer currCustomer;
+    CustomerDaoImpl potentialCustomer = new CustomerDaoImpl();
 
-    
+      
+      currCustomer = (test.userExists(email, password)) ? potentialCustomer.getCustomerData(email) :  new Customer();
+      System.out.println("login succesful");
+      return currCustomer;
+
+   
   }
 
   public boolean createCustomerAccount(User newUser) {

@@ -2,6 +2,7 @@ package com.bankprojectsample.model;
 
 import java.util.Scanner;
 
+import com.bankprojectsample.dao.CustomerDaoImpl;
 import com.bankprojectsample.dao.UserDaoImpl;
 
 public class User {
@@ -135,11 +136,24 @@ public class User {
 	
     System.out.println("Please enter your password: ");
 		String password = sn.nextLine();
-	
-  
-    // aka redirect to customer menu
-		
+	  UserDaoImpl user = new UserDaoImpl();
+    // sn.close();
+    Customer currCustomer;
+    currCustomer = user.login(email, password);
+    // CustomerDaoImpl gettingData;
+    // if (user.userExists(email, password)) {
+    //   gettingData = new CustomerDaoImpl();
+    //   currCustomer = gettingData.getCustomerData(email);
+    // }
+    
+    // display customer menu
+
+
+    System.out.println(currCustomer.getFirstName()+" successful");
+    currCustomer.displayMenu(currCustomer);
 	};
+
+
 	public void createCustomerAccount() {
 		Scanner sn = new Scanner(System.in);
 
@@ -148,7 +162,7 @@ public class User {
     System.out.println("Please enter an email.  ex: analace@gmail.com ");
 		
 		String email = sn.nextLine();
-	
+    
     // check with existing db to see if email exists.
       // UserDaoImpl checkUser = new UserDaoImpl();
       // boolean result = checkUser.userExists(email);

@@ -16,8 +16,8 @@ public class App {
 		System.out.println("Choose a number from the menu: ");
 		int num = sn.nextInt();
 		
-		
-		app.userInput(num); 
+		app.userInput(num);
+		sn.close(); 
         
   }
 }
