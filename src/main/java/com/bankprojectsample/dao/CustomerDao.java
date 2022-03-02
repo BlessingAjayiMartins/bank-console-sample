@@ -14,5 +14,5 @@ public interface CustomerDao {
 
   public void deposit(String accountType, int payload, String email);
 
-  public void sendMoney(int from, int to, String email);
+  public void sendMoney(int payload, String from, int to, String email);
 }

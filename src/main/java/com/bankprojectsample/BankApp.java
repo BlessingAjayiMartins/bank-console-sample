@@ -15,7 +15,7 @@ public class BankApp {
 		System.out.println("2. Log In");
 //		System.out.println("3. ");
 //		System.out.println("4. ");
-//		System.out.println("5. ");
+		System.out.println("5. Employee Login");
 		System.out.println("9. Exit Bank App");
 		
 		
@@ -32,6 +32,8 @@ public class BankApp {
 		case 2:
 			
 			user.login();
+		case 5:
+			user.employeeLogin();
 		case 9:
 			System.out.println("Exiting console...");
 			System.exit(0);

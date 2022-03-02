@@ -1,5 +1,6 @@
 package com.bankprojectsample.dao;
 
+// import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,7 +16,7 @@ import com.bankprojectsample.utility.DBConnection;
 public class CustomerDaoImpl implements CustomerDao {
 
   Connection connection = DBConnection.getConnection();
-  Customer customerState;
+  // Customer customerState;
 
   
   @Override
@@ -73,9 +74,9 @@ public class CustomerDaoImpl implements CustomerDao {
       }
       currCustomer.setAccountType(accountType);
       currCustomer.setAccountsBalance(accountsBalance);
-      result.close();
-      statement.close();
-      connection.close();
+      // result.close();
+      // statement.close();
+      // connection.close();
       } 
       
 		} catch (SQLException e) {
@@ -83,7 +84,7 @@ public class CustomerDaoImpl implements CustomerDao {
 			e.printStackTrace();
 		}
     // currCustomer = new Customer(firstName, lastName, email, customer_id, password, accountsBalance, accountType);
-    customerState = currCustomer;
+    // customerState = currCustomer;
     return currCustomer;
   }
 
@@ -114,14 +115,49 @@ public class CustomerDaoImpl implements CustomerDao {
       statement.setInt(2, customerId);
       
       row = statement.executeUpdate();
+      System.out.println(row + "row in customer has been updated");
 
+
+      // submit a query in the account table where customer_id and account_type are eaqual to your variable. get account_id from that row
+      // ===================================
+        statement = connection.prepareStatement("select * from account where customer_id = ? and account_type = ?");
+
+        statement.setInt(1, customerId);
+        statement.setString(2, accountType);
+
+        ResultSet result = statement.executeQuery();
+        int account_id;
+        result.absolute(1);
+        account_id = result.getInt("account_id");
+
+      // ===================================
+      statement = connection.prepareStatement("insert into transaction(transaction_id, transaction_type, payload, from_, to_, date_initiated, date_approved, date_denied, status) values(default,?,?,?,?,?,?,?,?)");
       
-      // update state
-      getCustomerData(customer.getEmail());
+      statement.setString(1, "Deposit");
+      statement.setInt(2, initialDeposit);
+      statement.setInt(3, 0); // 0 in the system will be seen as the currUser.
+      statement.setInt(4, account_id);
+      statement.setString(5, date.toString());
+      statement.setString(6, date.toString());
+      statement.setString(7, "N/A");
+      statement.setString(8, "Pending");
+
+      row = statement.executeUpdate();
+
+      System.out.println(row+" row/s has been updated in the transaction table");
+      // ===========================================
+
+ 
+
+      // result.close();
+      // statement.close();
+      // connection.close();
+      
 
     } catch (Exception e) {
       //TODO: handle exception
     }
+    
     
   }
 
@@ -134,8 +170,12 @@ public class CustomerDaoImpl implements CustomerDao {
       System.out.println("The account type " +accountType+ "is not associated with your account.");
     } else {
       int currBalance = currCustomer.getAccountsBalance().get(accountType);
-      System.out.println(accountType+ "Account");
-      System.out.println(currBalance);
+      System.out.println("=====================");
+      System.out.println("   B A L A N C E  ");
+      System.out.println("=====================");
+      System.out.println("    "+currBalance);
+      System.out.println("=====================");
+
 
     }
 
@@ -143,30 +183,247 @@ public class CustomerDaoImpl implements CustomerDao {
   }
 
   @Override
-  public void withdraw(String accountType, int payload) {
+  public void withdraw(String accountType, int payload, String email) {
+    // uses email as key to get the current customer data
+    Customer currCustomer = getCustomerData(email);
+    int customerId = currCustomer.getId();
+    Date date = new Date();
+    PreparedStatement statement = null;
+    int row = 0;
+    try {
+      
+      // submit a query in the account table where customer_id and account_type are eaqual to your variable. get account_id from that row
+      // ===================================
+      statement = connection.prepareStatement("select * from account where customer_id = ? and account_type = ?");
+
+      statement.setInt(1, customerId);
+      statement.setString(2, accountType);
+
+      ResultSet result = statement.executeQuery();
+      int account_id;
+      result.next();
+      account_id = result.getInt("account_id");
+      // subtract the payload from the current account balance
+      // ===================================
+      int balance = currCustomer.getAccountsBalance().get(accountType);
+      balance = balance - payload;
+
+
+      // update the account table to reflect the change
+      // ===================================
+      statement = connection.prepareStatement("update account set balance = ? where account_id in (?)");
+
+      statement.setInt(1, balance);
+      statement.setInt(2, account_id);
+
+      row = statement.executeUpdate();
+
+      System.out.println(row+" row has been updated in the account table");
+      // ===================================
+      statement = connection.prepareStatement("insert into transaction(transaction_id, transaction_type, payload, from_, to_, date_initiated, date_approved, date_denied, status) values(default,?,?,?,?,?,?,?,?)");
+
+      statement.setString(1, "Withdraw");
+      statement.setInt(2, payload);
+      statement.setInt(3, account_id); 
+      statement.setInt(4, 0);  // 0 represents "self" 
+      statement.setString(5, date.toString());
+      statement.setString(6, date.toString());
+      statement.setString(7, "N/A");
+      statement.setString(8, "Pending");
+
+      row = statement.executeUpdate();
+
+      System.out.println(row+" row/s has been updated in the transaction table");
+      // ===========================================
+
+      // result.close();
+      // statement.close();
+      // connection.close();
+    } catch (Exception e) {
+      //TODO: handle exception
+    }
     
 
+    
+     
 
 
-      getCustomerData(customerState.getEmail());
+
+
+
+      
     
   }
 
   @Override
-  public void deposit(String accountType, int payload) {
+  public void deposit(String accountType, int payload, String email) {
     
+    // uses email as key to get the current customer data
+    Customer currCustomer = getCustomerData(email);
+    int customerId = currCustomer.getId();
+    Date date = new Date();
+    System.out.println("making a deposit..."+customerId+" "+".");
+    PreparedStatement statement = null;
+    int row = 0;
+    try {
+      
+      // submit a query in the account table where customer_id and account_type are eaqual to your variable. get account_id from that row
+      // ===================================
+      statement = connection.prepareStatement("select * from account where customer_id = ? and account_type = ?");
+
+      statement.setInt(1, customerId);
+      statement.setString(2, accountType);
+      System.out.println("account Type: "+ accountType);
+      System.out.println("customer id: "+ customerId);
+
+      ResultSet result = statement.executeQuery();
+      int account_id;
+      result.next();
+      account_id = result.getInt("account_id");
+      // add the payload from the current account balance
+      // ===================================
+      int balance = currCustomer.getAccountsBalance().get(accountType);
+      balance = balance + payload;
+
+        System.out.println("...");
+      // update the account table to reflect the change
+      // ===================================
+      statement = connection.prepareStatement("update account set balance = ? where account_id in (?)");
+
+      statement.setInt(1, balance);
+      statement.setInt(2, account_id);
+
+      row = statement.executeUpdate();
+
+      System.out.println(row+" row has been updated in the account table");
+      System.out.println("...");
+      
+      // update transaction table
+      // ===================================
+      statement = connection.prepareStatement("insert into transaction(transaction_id, transaction_type, payload, from_, to_, date_initiated, date_approved, date_denied, status) values(default,?,?,?,?,?,?,?,?)");
+
+      statement.setString(1, "Deposit");
+      statement.setInt(2, payload);
+      statement.setInt(3, 0); // 0 represents "self"
+      statement.setInt(4, account_id);   
+      statement.setString(5, date.toString());
+      statement.setString(6, date.toString());
+      statement.setString(7, "N/A");
+      statement.setString(8, "Pending");
+
+      row = statement.executeUpdate();
+      
+      System.out.println(row+" row/s has been updated in the transaction table");
+      // ===========================================
+
+       
+    } catch (Exception e) {
+      e.printStackTrace();
+    } 
+    
+    //  result.close();
+    //   statement.close();
+    //   connection.close();
 
 
 
-    getCustomerData(customerState.getEmail());
+   
     
   }
 
   @Override
-  public void sendMoney() {
+  public void sendMoney(int payload, String accountType, int to, String email) {
+
+    
+  
+  // uses email as key to get the current customer data
+    Customer currCustomer = getCustomerData(email);
+    int customerId = currCustomer.getId();
+    Date date = new Date();
+    PreparedStatement statement = null;
+    int row = 0;
+    try {
+      
+      // submit a query in the account table where customer_id and account_type are eaqual to your variable. get account_id from that row
+      // ===================================
+      statement = connection.prepareStatement("select * from account where customer_id = ? and account_type = ?");
+
+      statement.setInt(1, customerId);
+      statement.setString(2, accountType);
+
+      ResultSet result = statement.executeQuery();
+      int account_id;
+      result.next();
+      account_id = result.getInt("account_id");
+      // subtract the payload from the current account balance
+      // ===================================
+      int balance = currCustomer.getAccountsBalance().get(accountType);
+      balance = balance - payload;
+
+
+
+      // update the account table to reflect the change of both users
+      // user1
+      // ===================================
+      statement = connection.prepareStatement("update account set balance = ? where account_id in (?)");
+
+      statement.setInt(1, balance);
+      statement.setInt(2, account_id);
+
+      row = statement.executeUpdate();
+
+      System.out.println(row+" row has been updated in the account table");
+      // user2 - get and update balance
+      // ===================================
+      // get
+      // ===================================
+      statement = connection.prepareStatement("select * from account where account_id = ?");
+
+      statement.setInt(1, to);
+
+      result = statement.executeQuery();
+      result.next();
+      int recieversBalance = result.getInt("balance");
+      recieversBalance = recieversBalance + payload;
+      // ====================================
+      // update
+      // ====================================
+      statement = connection.prepareStatement("update account set balance = ? where account_id in (?)");
+
+      statement.setInt(1, recieversBalance);
+      statement.setInt(2, to);
+
+      row = statement.executeUpdate();
+
+      System.out.println(row+" row has been updated in the account table");
+      // update transaction table
+      // ===================================
+      statement = connection.prepareStatement("insert into transaction(transaction_id, transaction_type, payload, from_, to_, date_initiated, date_approved, date_denied, status) values(default,?,?,?,?,?,?,?,?)");
+
+      statement.setString(1, "Transfer");
+      statement.setInt(2, payload);
+      statement.setInt(3, account_id); 
+      statement.setInt(4, to);   
+      statement.setString(5, date.toString());
+      statement.setString(6, date.toString());
+      statement.setString(7, "N/A");
+      statement.setString(8, "Pending");
+
+      row = statement.executeUpdate();
+
+      System.out.println(row+" row/s has been updated in the transaction table");
+      // ===========================================
+
+      // result.close();
+      // statement.close();
+      // connection.close();
+    } catch (Exception e) {
+
+    }
     
     
-    getCustomerData(customerState.getEmail());
+    
+    
   }
   
 }

@@ -209,10 +209,10 @@ public class Customer{
             withdraw(currCustomer.getEmail());
             break;
           case 5:
-            sendMoney();
+            sendMoney(currCustomer.getEmail());
             break;
           case 6:
-            sendMoney();
+            sendMoney(currCustomer.getEmail());
             break;
           case 9:
             System.exit(0);
@@ -362,14 +362,172 @@ public class Customer{
 
   public void withdraw(String email) {
 
+    System.out.println("=====================");
+    System.out.println("- - - Account Types - - - ");
+    System.out.println("==========================");
+    System.out.println("1. Checking");
+    System.out.println("2. Saving");
+    System.out.println("3. Investing");
+    System.out.println("==========================");
+
+    System.out.println("Which account do you want to withdraw from?     **Please enter a number** ");
+
+    Scanner sn = new Scanner(System.in);
+    String accountType = null;
+    int userInput = sn.nextInt();
+
+    System.out.println("How much would you like to withdraw? ");
+    int payload = sn.nextInt();
+    CustomerDaoImpl customer;
+    try {  
+        
+        switch (userInput) {
+          case 1:
+            accountType = "Checking";
+            customer = new CustomerDaoImpl();
+
+            customer.withdraw(accountType, payload, email);
+            break;
+          case 2:
+            accountType = "Saving";
+            customer = new CustomerDaoImpl();
+
+            customer.withdraw(accountType, payload, email);
+
+            break;
+          case 3:
+            accountType = "Investing";
+            customer = new CustomerDaoImpl();
+
+            customer.withdraw(accountType, payload, email);
+
+            break;
+          default:
+            System.out.println("Invalid input");
+            System.out.println("==========================");
+
+            break;
+        }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
   }
 
   public void deposit(String email) {
 
+    System.out.println("=====================");
+    System.out.println("- - - Account Types - - - ");
+    System.out.println("==========================");
+    System.out.println("1. Checking");
+    System.out.println("2. Saving");
+    System.out.println("3. Investing");
+    System.out.println("==========================");
+
+    System.out.println("Choose an account to deposit your funds to:      **Please enter a number** ");
+
+    Scanner sn = new Scanner(System.in);
+    String accountType = null;
+    int userInput = sn.nextInt();
+
+    System.out.println("How much would you like to deposit? ");
+
+    int payload = sn.nextInt();
+    CustomerDaoImpl customer;
+    try {  
+        
+        switch (userInput) {
+          case 1:
+            accountType = "Checking";
+            customer = new CustomerDaoImpl();
+
+            customer.deposit(accountType, payload, email);
+            break;
+          case 2:
+            accountType = "Saving";
+            customer = new CustomerDaoImpl();
+
+            customer.deposit(accountType, payload, email);
+
+            break;
+          case 3:
+            accountType = "Investing";
+            customer = new CustomerDaoImpl();
+
+            customer.deposit(accountType, payload, email);
+
+            break;
+          default:
+            System.out.println("Invalid input");
+            System.out.println("==========================");
+
+            break;
+        }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
   }
 
-  public void sendMoney() {
+  public void sendMoney(String email) {
+    Scanner sn = new Scanner(System.in);
+    System.out.println("Welcome to Money Transfers");
+    System.out.println("===========================");
+    System.out.println("How much would you like to send?");
+    System.out.println("=====================");
+    int payload= sn.nextInt();
+    
+    
+    System.out.println("=====================");
+    System.out.println("- - - Account Types - - - ");
+    System.out.println("==========================");
+    System.out.println("1. Checking");
+    System.out.println("2. Saving");
+    System.out.println("3. Investing");
+    System.out.println("==========================");
 
+    System.out.println("From which account:      **Please enter a number** ");
+
+    
+    String from = null;
+    int userInput = sn.nextInt();
+    System.out.println("===========================");
+    System.out.println("Please enter the accountId of the account recieving your transfer: ");
+    int to = sn.nextInt();
+
+    
+    CustomerDaoImpl customer;
+    try {  
+        
+        switch (userInput) {
+          case 1:
+            from = "Checking";
+            customer = new CustomerDaoImpl();
+
+            customer.sendMoney(payload, from, to, email);
+            break;
+          case 2:
+            from = "Saving";
+            customer = new CustomerDaoImpl();
+
+            customer.sendMoney(payload, from, to, email);
+
+            break;
+          case 3:
+            from = "Investing";
+            customer = new CustomerDaoImpl();
+
+            customer.sendMoney(payload, from, to, email);
+
+            break;
+          default:
+            System.out.println("Invalid input");
+            System.out.println("==========================");
+
+            break;
+        }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
   }
 
   

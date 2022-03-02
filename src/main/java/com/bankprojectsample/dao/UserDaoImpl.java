@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.bankprojectsample.model.Customer;
+import com.bankprojectsample.model.Employee;
 import com.bankprojectsample.model.User;
 import com.bankprojectsample.utility.DBConnection;
 
@@ -25,6 +26,38 @@ public class UserDaoImpl implements UserDao {
       currCustomer = (test.userExists(email, password)) ? potentialCustomer.getCustomerData(email) :  new Customer();
       System.out.println("login succesful");
       return currCustomer;
+
+   
+  }
+
+  public boolean employeeExists(String email, String password) {
+    boolean employeeExist = false;
+		PreparedStatement stat;
+		try {
+			stat = connection.prepareStatement("select * from employee where email = ? and password = ? ");
+			stat.setString(1, email);
+			stat.setString(2, password);
+
+			ResultSet res = stat.executeQuery();
+			employeeExist = res.next();
+      // return employeeExist;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return employeeExist;
+  }
+
+  public Employee employeeLogin(String email, String password) {
+    System.out.println("Logging In...");
+    // PreparedStatement statement = null;
+    UserDaoImpl test = new UserDaoImpl();
+    Employee currEmployee;
+    EmployeeDaoImpl potentialEmployee = new EmployeeDaoImpl();
+
+      
+      currEmployee = (test.employeeExists(email, password)) ? potentialEmployee.getEmployeeData(email) :  new Employee();
+      System.out.println("login succesful");
+      return currEmployee;
 
    
   }

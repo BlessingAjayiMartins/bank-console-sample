@@ -201,4 +201,27 @@ public class User {
 		// choose an account type to open. min deposit of $35
 		// logout
 	};
+
+
+  public void employeeLogin() {
+    Scanner sn = new Scanner(System.in);
+
+    // user types email... check db if user exists 
+
+    System.out.println("Please enter your email: ");
+    String email = sn.nextLine();
+
+    System.out.println("Please enter your password: ");
+    String password = sn.nextLine();
+    UserDaoImpl user = new UserDaoImpl();
+
+    Employee currEmployee;
+    currEmployee = user.employeeLogin(email, password);
+
+
+
+    System.out.println(currEmployee.getFirstName()+" successful");
+    currEmployee.displayMenu(currEmployee);
+  }
+
 }
