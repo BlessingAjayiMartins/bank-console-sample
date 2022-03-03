@@ -16,7 +16,7 @@ public class UserDaoImpl implements UserDao {
   Connection connection = DBConnection.getConnection();
 
   public Customer login(String email, String password) {
-    System.out.println("Logging In...");
+    // System.out.println("Logging In...");
     // PreparedStatement statement = null;
     UserDaoImpl test = new UserDaoImpl();
     Customer currCustomer;
@@ -24,7 +24,7 @@ public class UserDaoImpl implements UserDao {
 
       
       currCustomer = (test.userExists(email, password)) ? potentialCustomer.getCustomerData(email) :  new Customer();
-      System.out.println("login succesful");
+      // System.out.println("login succesful");
       return currCustomer;
 
    
@@ -48,7 +48,7 @@ public class UserDaoImpl implements UserDao {
   }
 
   public Employee employeeLogin(String email, String password) {
-    System.out.println("Logging In...");
+    
     // PreparedStatement statement = null;
     UserDaoImpl test = new UserDaoImpl();
     Employee currEmployee;
@@ -56,7 +56,7 @@ public class UserDaoImpl implements UserDao {
 
       
       currEmployee = (test.employeeExists(email, password)) ? potentialEmployee.getEmployeeData(email) :  new Employee();
-      System.out.println("login succesful");
+      
       return currEmployee;
 
    

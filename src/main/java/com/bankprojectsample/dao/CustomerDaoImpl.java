@@ -8,8 +8,8 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashMap;
 
-
-
+import com.bankprojectsample.exception.InvalidAccountException;
+import com.bankprojectsample.exception.InvalidInitialDepositException;
 import com.bankprojectsample.model.Customer;
 import com.bankprojectsample.utility.DBConnection;
 
@@ -155,7 +155,7 @@ public class CustomerDaoImpl implements CustomerDao {
       
 
     } catch (Exception e) {
-      //TODO: handle exception
+      e.printStackTrace();
     }
     
     
@@ -164,10 +164,12 @@ public class CustomerDaoImpl implements CustomerDao {
   @Override
   public void viewAccountBalance(String accountType, String email) {
     Customer currCustomer = getCustomerData(email);
-    if (currCustomer == null) {
+    try {
+      if (currCustomer == null) {
       System.out.println("Somethin is wrong... customer state is null.");
     } else if (!currCustomer.getAccountsBalance().containsKey(accountType)) {
-      System.out.println("The account type " +accountType+ "is not associated with your account.");
+      System.out.println("The account type " +accountType+ " is not associated with your account.");
+      throw new InvalidAccountException("System Error: This account does not exist.");
     } else {
       int currBalance = currCustomer.getAccountsBalance().get(accountType);
       System.out.println("=====================");
@@ -178,6 +180,10 @@ public class CustomerDaoImpl implements CustomerDao {
 
 
     }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    
 
     
   }
@@ -187,10 +193,33 @@ public class CustomerDaoImpl implements CustomerDao {
     // uses email as key to get the current customer data
     Customer currCustomer = getCustomerData(email);
     int customerId = currCustomer.getId();
+    int balance = currCustomer.getAccountsBalance().get(accountType);
     Date date = new Date();
     PreparedStatement statement = null;
     int row = 0;
+
+   
     try {
+
+
+
+      if (payload> balance) {
+        System.out.println("System Error: Attempt to withdraw funds greater than account balance");
+        
+      
+        throw new InvalidInitialDepositException("Please try again");
+        
+      } else if (payload < 0) {
+        System.out.println("System Error: Funds must be a positive integer");
+        
+      
+        throw new InvalidInitialDepositException("Please try again");
+      } else if (payload == 0) {
+        System.out.println("System Error: Funds must be a positive integer");
+        
+      
+        throw new InvalidInitialDepositException("Please try again");
+      }
       
       // submit a query in the account table where customer_id and account_type are eaqual to your variable. get account_id from that row
       // ===================================
@@ -205,7 +234,7 @@ public class CustomerDaoImpl implements CustomerDao {
       account_id = result.getInt("account_id");
       // subtract the payload from the current account balance
       // ===================================
-      int balance = currCustomer.getAccountsBalance().get(accountType);
+      balance = currCustomer.getAccountsBalance().get(accountType);
       balance = balance - payload;
 
 
@@ -240,7 +269,7 @@ public class CustomerDaoImpl implements CustomerDao {
       // statement.close();
       // connection.close();
     } catch (Exception e) {
-      //TODO: handle exception
+      e.printStackTrace();
     }
     
 
@@ -418,7 +447,7 @@ public class CustomerDaoImpl implements CustomerDao {
       // statement.close();
       // connection.close();
     } catch (Exception e) {
-
+      e.printStackTrace();
     }
     
     

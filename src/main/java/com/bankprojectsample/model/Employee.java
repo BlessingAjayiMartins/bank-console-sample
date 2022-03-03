@@ -114,7 +114,7 @@ public class Employee {
     try {
       int userInput = 0;
       while (userInput != 9) {
-        System.out.println("Welcome back "+ firstName + ".");
+        System.out.println("Welcome back "+ firstName + " .");
         System.out.println("===============================");
         System.out.println(" E M P L O Y E E   P O R T A L ");
         System.out.println("===============================");
@@ -123,7 +123,7 @@ public class Employee {
         System.out.println("3. View a log of all transactions.");
         System.out.println("9. Log out");
         System.out.println("===============================");
-        System.out.println("Please enter a number from the menue above: ");
+        System.out.println("Please enter a number from the menu above: ");
 
         userInput = sn.nextInt();
        
@@ -132,10 +132,10 @@ public class Employee {
             // openNewBankAccount(currEmployee);
             break;
           case 2:
-            viewCustomerBankAccounts(currEmployee.getEmail());
+            viewCustomerBankAccounts(currEmployee);
             break;
           case 3:
-            viewTransactionLog(currEmployee.getEmail());
+            viewTransactionLog(currEmployee);
             break;
           case 9:
             System.exit(0);
@@ -149,13 +149,27 @@ public class Employee {
     } catch (Exception e) {
       //TODO: handle exception
     }
+    sn.close();
   }
-  public void viewCustomerBankAccounts(String email) {
+  public void viewCustomerBankAccounts(Employee employee) {
+    Scanner sn = new Scanner(System.in);
 
-  }
-  public void viewTransactionLog(String email) {
+    System.out.println("==============================");
+    System.out.println("V I E W   C U S T O M E R   A C C O U N T");
+    System.out.println("==============================");
+    System.out.println("Please Enter the customers routing number to view balance: ");   //routing number is account_id
+    int routingNum = sn.nextInt();
+
+
     EmployeeDaoImpl currEmployee = new EmployeeDaoImpl();
-    currEmployee.printTransactionLog();
+    // currEmployee.getEmployeeData(email);
+    currEmployee.viewCustomerBankAccounts(routingNum, employee);
+  }
+
+
+  public void viewTransactionLog(Employee employee) {
+    EmployeeDaoImpl currEmployee = new EmployeeDaoImpl();
+    currEmployee.printTransactionLog(employee);
 
   }
 }

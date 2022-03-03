@@ -4,7 +4,7 @@ import com.bankprojectsample.model.Employee;
 
 public interface EmployeeDao {
   public Employee getEmployeeData(String email);
-  public void printTransactionLog();
-  public void viewCustomerBankAccounts(int customerId);
+  public void printTransactionLog(Employee employee);
+  public void viewCustomerBankAccounts(int routingNum, Employee employee); // aka account_id
   // public void pendingCases();
 }

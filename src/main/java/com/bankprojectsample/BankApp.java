@@ -9,14 +9,18 @@ public class BankApp {
 
 
   public void display() {
-		System.out.println("---- Welcome to Boogie Down Banking Console -----");
-		System.out.println("---- M E N U ----");
+		System.out.println("========================================");
+
+		System.out.println("  Welcome to Boogie Down Banking Console ");
+		System.out.println("========================================");
+
+		System.out.println("   -  -  -  B A N K   M E N U  -  -  -  ");
+		System.out.println("========================================");
 		System.out.println("1. Create an Account");
 		System.out.println("2. Log In");
-//		System.out.println("3. ");
-//		System.out.println("4. ");
 		System.out.println("5. Employee Login");
 		System.out.println("9. Exit Bank App");
+		System.out.println("========================================");
 		
 		
 	}
@@ -32,8 +36,10 @@ public class BankApp {
 		case 2:
 			
 			user.login();
+			break;
 		case 5:
 			user.employeeLogin();
+			break;
 		case 9:
 			System.out.println("Exiting console...");
 			System.exit(0);

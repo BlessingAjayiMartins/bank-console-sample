@@ -4,6 +4,9 @@ import java.util.Scanner;
 
 import com.bankprojectsample.dao.CustomerDaoImpl;
 import com.bankprojectsample.dao.UserDaoImpl;
+import com.bankprojectsample.exception.InvalidCustomerLoginException;
+import com.bankprojectsample.exception.InvalidEmployeeLoginException;
+import com.bankprojectsample.exception.InvalidInitialDepositException;
 
 public class User {
   
@@ -126,102 +129,133 @@ public class User {
   // takes username and password
 	public void login() {
 		Scanner sn = new Scanner(System.in);
+    System.out.println("===============================");
+    System.out.println("  C U S T O M E R   L O G I N  ");
+    System.out.println("===============================");
 		
 		// user types email... check db if user exists 
 	
     System.out.println("Please enter your email: ");
 		String email = sn.nextLine();
+    System.out.println("===============================");
+
 	
     // then password... if verified give access to account (customer/Employee)
 	
     System.out.println("Please enter your password: ");
 		String password = sn.nextLine();
+    System.out.println("===============================");
 	  UserDaoImpl user = new UserDaoImpl();
-    // sn.close();
+    
     Customer currCustomer;
     currCustomer = user.login(email, password);
-    // CustomerDaoImpl gettingData;
-    // if (user.userExists(email, password)) {
-    //   gettingData = new CustomerDaoImpl();
-    //   currCustomer = gettingData.getCustomerData(email);
-    // }
     
-    // display customer menu
 
+    
+      
+    
+      try {
+        if (currCustomer.getFirstName() == null) {
+          sn.close();
+          throw new InvalidCustomerLoginException("System Error: Invalid Credentials for Customer login");
+        } else {
+          System.out.println(currCustomer.getFirstName()+" Logged In");
+          currCustomer.displayMenu(currCustomer);
+        }
+          
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+    
 
-    System.out.println(currCustomer.getFirstName()+" successful");
-    currCustomer.displayMenu(currCustomer);
+    sn.close();
 	};
 
 
 	public void createCustomerAccount() {
 		Scanner sn = new Scanner(System.in);
 
-		// to create an account we need to have the user email 
+    System.out.println("===============================================");
+    System.out.println(" C R E A T E   C U S T O M E R   A C C O U N T ");
+    System.out.println("===============================================");
+
+		
 		
     System.out.println("Please enter an email.  ex: analace@gmail.com ");
 		
 		String email = sn.nextLine();
+    System.out.println("===============================");
     
-    // check with existing db to see if email exists.
-      // UserDaoImpl checkUser = new UserDaoImpl();
-      // boolean result = checkUser.userExists(email);
-      // if !(result) {
-      //   System.out.println("We have this email registered with us..");
-      // }
-
-        // if email exists, return first name saying this name is associated with this email. 
-        // is this you? do you want to open a new bank account? okay, lets get you logged in first>>>
-  
-    // if emailExists = false. ask for first name and last name.
+   
 		System.out.println("Please enter your first name: ");
 		String firstName = sn.nextLine();
+    System.out.println("===============================");
+
 		System.out.println("Please enter your last name: ");
 		String lastName = sn.nextLine();
+    System.out.println("===============================");
+
 		
     
-		// then create password and save new account in the db with a generated id
-    // ask user to type in a password
+		
 		System.out.println("Please enter a password: ");
 		String password = sn.nextLine();
+    System.out.println("===============================");
 
-    // retype passowrd
+
+    
 		System.out.println("Please renter password: ");
 		String passwordCheck = sn.nextLine();
+    System.out.println("===============================");
 
-    // confirm password is the same ith equals method.
+
+    
     User newUser = new User(firstName, lastName, email, password);
     
     if (password.equals(passwordCheck)) {
       UserDaoImpl addUser = new UserDaoImpl();
       addUser.createCustomerAccount(newUser);
     }
-    // place inputs in a user/customer constructor object and send it to the database to be added to the customer record.
-		// redirect to customer class to open bank account
-		// choose an account type to open. min deposit of $35
-		// logout
+   sn.close();
 	};
 
 
   public void employeeLogin() {
     Scanner sn = new Scanner(System.in);
 
+    System.out.println("===============================");
+    System.out.println(" E M P L O Y E E    L O G I N ");
+    System.out.println("===============================");
+
     // user types email... check db if user exists 
 
     System.out.println("Please enter your email: ");
     String email = sn.nextLine();
+    System.out.println("===============================");
 
     System.out.println("Please enter your password: ");
     String password = sn.nextLine();
     UserDaoImpl user = new UserDaoImpl();
+    System.out.println("===============================");
+
 
     Employee currEmployee;
     currEmployee = user.employeeLogin(email, password);
 
+    try {
+      if (currEmployee.getFirstName() == null) {
+        sn.close();
+        throw new InvalidEmployeeLoginException("System Error: Invalid Credentials for Employee login");
+      } else {
+        System.out.println(currEmployee+" successful");
+        currEmployee.displayMenu(currEmployee);
+      }
+        
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
 
-
-    System.out.println(currEmployee.getFirstName()+" successful");
-    currEmployee.displayMenu(currEmployee);
+    sn.close();
   }
 
 }

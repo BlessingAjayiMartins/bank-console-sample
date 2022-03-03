@@ -1,6 +1,4 @@
-# bank-console-sample
-
-Banking Operations # Bank ## Description 
+# Bank-Console-Sample    
 
 The Bank app is a console-based application that simulates banking operations. 
 
@@ -8,39 +6,73 @@ A customer can apply for an account, view their balance, and make withdrawals an
 
 An employee can approve or deny accounts and view account balances for their customers.  
 
-Requirements 
-
-1. Functionality should reflect the below user stories. 
-
-2. Data is stored in a database. 
-
-3. A custom stored procedure is called to perform some portion of the functionality. 
-
-4. Data Access is performed through the use of JDBC in a data layer consisting of Data Access Objects. 
-
-5. All input is received using the java.util.Scanner class. 
-
-6. Log4j is implemented to log events to a file. 
-
-7. A minimum of one (1) JUnit test is written to test some functionality. 
+Technologies used in this application include: 
+  Java 1.8
+  PostgreSQL 42.3.3
+  JUnit 5.8.2
+  Maven 
 
 
 
-User Stories 
+EXAMPLE:
 
-* As a user, I can login. - done
-* As a user, I can register for a customer account. - done 
-
-* As a customer, I can apply for a new bank account with a starting balance. - done
-* As a customer, I can view the balance of a specific account. - done
-* As a customer, I can make a withdrawal or deposit to a specific account. 
-* As a customer, I can post a money transfer to another account. 
-* As a customer, I can accept a money transfer from another account.
-
-* As the system, I reject invalid transactions. 
-* Ex: * A withdrawal that would result in a negative balance. 
-* A deposit or withdrawal of negative money. 
-
-* As an employee, I can approve or reject an account. 
-* As an employee, I can view a customer's bank accounts. 
-* As an employee, I can view a log of all transactions.
+========================================
+  Welcome to Boogie Down Banking Console
+========================================
+   -  -  -  B A N K   M E N U  -  -  -
+========================================
+1. Create an Account
+2. Log In
+5. Employee Login
+9. Exit Bank App
+========================================
+Choose a number from the menu: 
+2
+===============================
+  C U S T O M E R   L O G I N
+===============================
+Please enter your email:
+test1@gmail.com
+===============================
+Please enter your password:
+******
+===============================
+Welcome back test1first.
+===============================
+1. Open new Bank Account.
+2. View Account Balance
+3. Make a Deposit
+4. Make a Withdrawl
+5. Make a Transfer
+6. Send Money
+9. Log out
+===============================
+Please enter a number from the menu above:
+2
+=====================
+- - - Account Types - - -
+==========================
+1. Checking
+2. Saving
+3. Investing
+==========================
+Enter a number to view the balance associated with the account
+1
+=====================
+   B A L A N C E
+=====================
+    336
+=====================
+===============================
+Welcome back test1first.
+===============================
+1. Open new Bank Account.
+2. View Account Balance
+3. Make a Deposit
+4. Make a Withdrawl
+5. Make a Transfer
+6. Send Money
+9. Log out
+===============================
+Please enter a number from the menu above:
+9

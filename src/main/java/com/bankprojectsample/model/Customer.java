@@ -5,6 +5,7 @@ import java.util.Scanner;
 
 import com.bankprojectsample.dao.CustomerDaoImpl;
 import com.bankprojectsample.exception.InvalidInitialDepositException;
+import com.bankprojectsample.exception.InvalidMenuInputException;
 
 public class Customer{
   private String firstName;
@@ -179,52 +180,57 @@ public class Customer{
 
     try {
       int userInput = 0;
-      while (userInput != 9) {
-        System.out.println("Welcome back "+ firstName + ".");
-        System.out.println("===============================");
-        System.out.println("1. Open new Bank Account.");
-        System.out.println("2. View Account Balance");
-        System.out.println("3. Make a Deposit");
-        System.out.println("4. Make a Withdrawl");
-        System.out.println("5. Make a Transfer");
-        System.out.println("6. Send Money");
-        System.out.println("9. Log out");
-        System.out.println("===============================");
-        System.out.println("Please enter a number from the menue above: ");
+      while ( userInput != 9 ) {
+        // while ( userInput >= 0 ) {
+          System.out.println("===============================");
+          System.out.println("Welcome back "+ firstName + ".");
+          System.out.println("===============================");
+          System.out.println("1. Open new Bank Account.");
+          System.out.println("2. View Account Balance");
+          System.out.println("3. Make a Deposit");
+          System.out.println("4. Make a Withdrawl");
+          System.out.println("5. Make a Transfer");
+          System.out.println("6. Send Money");
+          System.out.println("9. Log out");
+          System.out.println("===============================");
+          System.out.println("Please enter a number from the menu above: ");
 
-        userInput = sn.nextInt();
-        // sn.close();
-        // Customer currCustomer = new Customer()
-        switch (userInput) {
-          case 1:
-            openNewBankAccount(currCustomer);
-            break;
-          case 2:
-            viewAccountBalance(currCustomer.getEmail());
-            break;
-          case 3:
-            deposit(currCustomer.getEmail());
-            break;
-          case 4:
-            withdraw(currCustomer.getEmail());
-            break;
-          case 5:
-            sendMoney(currCustomer.getEmail());
-            break;
-          case 6:
-            sendMoney(currCustomer.getEmail());
-            break;
-          case 9:
-            System.exit(0);
-            break;
+          userInput = sn.nextInt();
+
+          
+          switch (userInput) {
+            case 1:
+              openNewBankAccount(currCustomer);
+              break;
+            case 2:
+              viewAccountBalance(currCustomer.getEmail());
+              break;
+            case 3:
+              deposit(currCustomer.getEmail());
+              break;
+            case 4:
+              withdraw(currCustomer.getEmail());
+              break;
+            case 5:
+              sendMoney(currCustomer.getEmail());
+              break;
+            case 6:
+              sendMoney(currCustomer.getEmail());
+              break;
+            case 9:
+              System.exit(0);
+              break;
+          
+            default:
+              
+              break;
+          }
+        // }
         
-          default:
-            break;
-        }
         
       }
     } catch (Exception e) {
-      //TODO: handle exception
+      e.printStackTrace();
     }
 
   }
@@ -380,6 +386,7 @@ public class Customer{
     int payload = sn.nextInt();
     CustomerDaoImpl customer;
     try {  
+      
         
         switch (userInput) {
           case 1:

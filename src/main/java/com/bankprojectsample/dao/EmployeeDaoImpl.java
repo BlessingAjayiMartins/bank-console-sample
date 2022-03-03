@@ -45,33 +45,68 @@ public class EmployeeDaoImpl implements EmployeeDao {
   }
 
   @Override
-  public void printTransactionLog() {
+  public void printTransactionLog(Employee currEmployee) {
     Connection connection = DBConnection.getConnection();
 		PreparedStatement statement = null;
 
-    try {
-      // statement = connection.prepareStatement("select * from print_transaction_log()");  // stored procedure need fixing
-      statement = connection.prepareStatement("select transaction_id, transaction_type, payload, from_, to_, date_approved from transaction");
-      ResultSet result = statement.executeQuery();
-      while (result.next()) {
-        System.out.println("Transaction ID: "+result.getString(1)+" | Transaction Type: "+result.getString(2)+" | Payload: "+result.getString(3)+" | From: "+result.getString(4)+" | To: "+result.getString(5)+" | Date: "+result.getString(6));
-        System.out.println("====================================");
+    if (currEmployee == null) {
+      System.out.println("Somethin is wrong... Employee state is null.");
+    }else {
+      try {
+        // statement = connection.prepareStatement("select * from print_transaction_log()");  // stored procedure need fixing
+        statement = connection.prepareStatement("select transaction_id, transaction_type, payload, from_, to_, date_approved from transaction");
+        ResultSet result = statement.executeQuery();
+        while (result.next()) {
+          System.out.println("Transaction ID: "+result.getString(1)+" | Transaction Type: "+result.getString(2)+" | Payload: "+result.getString(3)+" | From: "+result.getString(4)+" | To: "+result.getString(5)+" | Date: "+result.getString(6));
+          System.out.println("====================================");
+        }
+  
+        // result.close();
+        // statement.close();
+        // connection.close();
+  
+      } catch (Exception e) {
+        //TODO: handle exception
       }
-
-      // result.close();
-      // statement.close();
-      // connection.close();
-
-    } catch (Exception e) {
-      //TODO: handle exception
     }
+    
     
     
   }
 
   @Override
-  public void viewCustomerBankAccounts(int customerId) {
+  public void viewCustomerBankAccounts(int routingNum, Employee currEmployee) {
+    Connection connection = DBConnection.getConnection();
+
+  
+    if (currEmployee == null) {
+      System.out.println("Somethin is wrong... Employee state is null.");
+    } else {
+        PreparedStatement statement = null;
     
+        try {
+          statement = connection.prepareStatement("select * from account where account_id in (?)");
+          statement.setInt(1, routingNum);
+          ResultSet result = statement.executeQuery();
+          while (result.next()) { 
+            int currBalance = result.getInt("balance");
+
+            System.out.println("=====================");
+            System.out.println("   B A L A N C E  ");
+            System.out.println("=====================");
+            System.out.println("    "+currBalance);
+            System.out.println("=====================");
+          }
+        
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
+
+
+    }
+
+
+		
     
   }
   
