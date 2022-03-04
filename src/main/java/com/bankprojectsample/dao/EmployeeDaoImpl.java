@@ -39,7 +39,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
       // statement.close();
       // connection.close();
     } catch (Exception e) {
-      //TODO: handle exception
+      e.printStackTrace();
     }
     return currEmployee;
   }
@@ -66,7 +66,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
         // connection.close();
   
       } catch (Exception e) {
-        //TODO: handle exception
+        e.printStackTrace();
       }
     }
     

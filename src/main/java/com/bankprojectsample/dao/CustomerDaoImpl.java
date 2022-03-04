@@ -127,7 +127,7 @@ public class CustomerDaoImpl implements CustomerDao {
 
         ResultSet result = statement.executeQuery();
         int account_id;
-        result.absolute(1);
+        result.next();
         account_id = result.getInt("account_id");
 
       // ===================================

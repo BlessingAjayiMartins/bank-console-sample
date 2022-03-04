@@ -78,7 +78,7 @@ public class UserDaoImpl implements UserDao {
 			System.out.println(rows + " new user registered successfully");
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 		if (rows == 0)
