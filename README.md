@@ -11,6 +11,7 @@ Technologies used in this application include:
   PostgreSQL 42.3.3
   JUnit 5.8.2
   Maven 
+  JDBC
 
 
 
